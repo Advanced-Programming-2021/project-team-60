@@ -13,7 +13,7 @@ public class ProfileMenuController extends Controller {
         else print("invalid command");
     }
 
-    private void changeNickname(String command) {
+    public void changeNickname(String command) {
         Matcher nicknameMatcher = getMatcher("--nickname (\\S+)", command);
         if (nicknameMatcher.find()) {
             String nickname = nicknameMatcher.group(1);
@@ -28,7 +28,7 @@ public class ProfileMenuController extends Controller {
         }
     }
 
-    private void changePassword(String command) {
+    public void changePassword(String command) {
         Matcher currentPasswordMatcher = getMatcher("--current (\\S+)", command);
         Matcher newPasswordMatcher = getMatcher("--new (\\S+)", command);
         if (currentPasswordMatcher.find() && newPasswordMatcher.find()) {

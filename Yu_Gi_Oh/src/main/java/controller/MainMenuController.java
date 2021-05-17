@@ -18,7 +18,7 @@ public class MainMenuController extends Controller {
         else print("invalid command");
     }
 
-    private void logout() {
+    public void logout() {
         User.currentUser = null;
         print("user logged out successfully!");
         LoginMenu.getInstance().runMenuCommands();

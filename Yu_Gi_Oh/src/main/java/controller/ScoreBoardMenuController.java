@@ -11,9 +11,9 @@ public class ScoreBoardMenuController extends Controller {
 
     }
 
-    private void showScoreboard() {
+    public void showScoreboard() {
         int rank = 1;
-        Comparator<User> userComparator = Comparator.comparing(User::getScore).thenComparing(User::getNickname);
+        Comparator<User> userComparator = Comparator.comparing(User::getScore).reversed().thenComparing(User::getNickname);
         User.getAllUsers().sort(userComparator);
         int previousScore = User.getAllUsers().get(0).getScore();
         for (User user : User.getAllUsers()) {
