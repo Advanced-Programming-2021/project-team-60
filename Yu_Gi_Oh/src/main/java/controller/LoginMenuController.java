@@ -15,7 +15,7 @@ public class LoginMenuController extends Controller {
         else print("invalid command");
     }
 
-    private void createUser(String command) {
+    public void createUser(String command) {
         Matcher usernameMatcher = getMatcher("--username (\\S+)", command);
         Matcher nicknameMatcher = getMatcher("--nickname (\\S+)", command);
         Matcher passwordMatcher = getMatcher("--password (\\S+)", command);
@@ -37,7 +37,7 @@ public class LoginMenuController extends Controller {
         }
     }
 
-    private void login(String command) {
+    public void login(String command) {
         Matcher usernameMatcher = getMatcher("--username (\\S+)", command);
         Matcher passwordMatcher = getMatcher("--password (\\S+)", command);
         if (usernameMatcher.find() && passwordMatcher.find()) {

@@ -74,7 +74,7 @@ public class DuelMenuController extends Controller {
                 game.getCurrentPlayer().getBoard().getHand().get(game.getCurrentPlayer().getBoard().getHand().size()-1));
     }
 
-    private void summon () {
+    /*private void summon () {
         CardNotSelectHandler cardNotSelectHandler = new CardNotSelectHandler();
         CardCantBeSummonedHandler cardCantBeSummonedHandler = new CardCantBeSummonedHandler();
         NotAllowedInCurrentPhase notAllowedInCurrentPhase = new NotAllowedInCurrentPhase();
@@ -86,7 +86,7 @@ public class DuelMenuController extends Controller {
         fullMonsterZoneHandler.setNextHandler(cardNotSelectHandler);
         cardAlreadySetOrSummoned.setNextHandler(null);
 
-    }
+    }*/
 
     public void showGameBoard() {
         StringBuilder board = new StringBuilder();

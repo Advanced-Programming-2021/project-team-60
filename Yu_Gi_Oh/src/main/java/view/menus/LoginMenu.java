@@ -20,7 +20,8 @@ public class LoginMenu extends Menu {
     }
 
     public static LoginMenu getInstance() {
-        return instance;
+        if (instance == null) return new LoginMenu(null);
+        else return instance;
     }
 
     @Override

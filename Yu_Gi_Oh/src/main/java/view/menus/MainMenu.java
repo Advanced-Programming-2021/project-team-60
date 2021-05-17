@@ -24,7 +24,9 @@ public class MainMenu extends Menu {
     }
 
     public static MainMenu getInstance() {
-        return instance;
+        if (instance == null) return new MainMenu(LoginMenu.getInstance());
+        else return instance;
+
     }
 
     @Override
