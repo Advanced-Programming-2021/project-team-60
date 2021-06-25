@@ -1,5 +1,6 @@
 package model.cards.spellcards;
 
+import model.User;
 import model.cards.monstercards.MonsterCard;
 
 public class Terraforming extends SpellCard{
@@ -11,7 +12,9 @@ public class Terraforming extends SpellCard{
     }
 
     public void action(MonsterCard monster){
-
+        User user = User.currentUser;
+        user.getBoard().addCardFromDeckToHand();
+        user.getBoard().addCardFromDeckToHand();
     }
 
     @Override

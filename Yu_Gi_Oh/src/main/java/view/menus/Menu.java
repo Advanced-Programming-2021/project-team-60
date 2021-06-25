@@ -42,12 +42,12 @@ public abstract class Menu {
                 boolean isSubmenuFounded = false;
                 for (Menu subMenu : this.subMenus) {
                     counter++;
-                    if (subMenu.name.matches(inputSplit[2])) {
+                    if (subMenu.name.equalsIgnoreCase(inputSplit[2])) {
                         isSubmenuFounded = true;
                         break;
                     }
                 }
-                if (isSubmenuFounded && !(this.name.matches("Login")))
+                if (isSubmenuFounded && !(this.name.matches("Login") && (this.subMenus.get(counter).name.equalsIgnoreCase("duel") )))
                     this.subMenus.get(counter).runMenuCommands();
                 else {
                     print("menu navigation is not possible");

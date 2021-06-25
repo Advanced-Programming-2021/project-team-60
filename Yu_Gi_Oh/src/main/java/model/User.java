@@ -35,7 +35,7 @@ public class User {
 
     public static User getUserByUsername(String username) {
         for (User user : allUsers) {
-            if (user.getUsername().equals(username)) return user;
+            if (user.getUsername().equalsIgnoreCase(username)) return user;
         }
         return null;
     }
@@ -112,17 +112,13 @@ public class User {
         return userDecks;
     }
 
-    public boolean doesUserHaveThisCard(String cardName) {
-        return userCards.contains(CardFactory.getCardByCardName(cardName));
-    }
-
     public void addCard(Card card) {
         userCards.add(card);
     }
 
     public void removeCard(String cardName) {
         for (Card card : userCards) {
-            if (card.getName() == cardName ) {
+            if (card.getName() == cardName) {
                 userCards.remove(card);
                 return;
             }

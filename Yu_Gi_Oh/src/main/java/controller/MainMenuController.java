@@ -24,13 +24,13 @@ public class MainMenuController extends Controller {
         LoginMenu.getInstance().runMenuCommands();
     }
 
-    private void startNewGame(String command) {
+    public void startNewGame(String command) {
         Matcher roundsMatcher = getMatcher("--rounds (\\d)", command);
         Matcher secondPlayerUsernameMatcher = getMatcher("--second-player (\\S+)", command);
         if (roundsMatcher.find() && secondPlayerUsernameMatcher.find()) {
            int rounds = Integer.parseInt(roundsMatcher.group(1));
             String secondPlayerUsername = secondPlayerUsernameMatcher.group(1);
-            if (User.getUserByUsername(secondPlayerUsername) == null)
+            if (User.getUserByUsername(secondPlayerUsername) == null || secondPlayerUsername.equalsIgnoreCase(User.currentUser.getUsername()))
                 print("there is no player with this username");
             if (isUserActiveDeckAvailableAndValid(User.currentUser) && isUserActiveDeckAvailableAndValid(User.getUserByUsername(secondPlayerUsername))) {
                 if (rounds > 3 || rounds < 1) print("number of rounds is not supported");
@@ -38,7 +38,7 @@ public class MainMenuController extends Controller {
                     Game game = new Game(User.currentUser.getUsername(), secondPlayerUsername, rounds,
                             User.getUserByUsername(secondPlayerUsername).userDecks.getActiveDeck(), User.currentUser.userDecks.getActiveDeck());
                     DuelMenuController.getInstance().setGame(game);
-                    DeckMenu.getInstance().runMenuCommands();
+                    DuelMenu.getInstance().runMenuCommands();
                 }
             }
         }
@@ -57,7 +57,7 @@ public class MainMenuController extends Controller {
         if (user.getUserDecks().getActiveDeck() == null) {
             print(user.getUsername() + " has no active deck");
             return false;
-        } else if (user.getUserDecks().getActiveDeck().isValid) {
+        } else if (!user.getUserDecks().getActiveDeck().isValid()) {
             print(user.getUsername() + "’s deck is invalid");
             return false;
         }

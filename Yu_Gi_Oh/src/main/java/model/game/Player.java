@@ -7,7 +7,7 @@ public class Player {
     private Board board;
     private int lifePoint = 8000;
 
-    public Player (String name, Deck deck){
+    public Player(String name, Deck deck) {
         setUsername(name);
         deck.shuffleDeck();
         board = new Board(deck);
@@ -29,12 +29,9 @@ public class Player {
         return board;
     }
 
-    public String showBoard() {
-        StringBuilder returnString = new StringBuilder();
-        returnString.append(this.getBoard().toString());
-        returnString.append(this.username+":"+this.lifePoint);
-        return returnString.toString();
+    public String getUsername() {
+        return username;
     }
-
-
 }
+
+

@@ -76,4 +76,14 @@ public class Game {
 
     }
 
+    public void changeTurn() {
+        if (currentPlayer == player1) {
+            setCurrentPlayer(player2);
+            setOpponentPlayer(player1);
+        }else  {
+            setCurrentPlayer(player1);
+            setOpponentPlayer(player2);
+        }
+    }
+
 }

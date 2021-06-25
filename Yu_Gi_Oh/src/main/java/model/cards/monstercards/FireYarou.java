@@ -9,7 +9,7 @@ public class FireYarou extends MonsterCard{
     }
 
     public void action(MonsterCard monster){
-
+        super.action(monster);
     }
 
     @Override

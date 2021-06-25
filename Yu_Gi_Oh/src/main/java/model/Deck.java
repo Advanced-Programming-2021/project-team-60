@@ -5,23 +5,23 @@ import model.cards.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Deck implements Prototype{
     private SideDeck sideDeck;
     private String name;
-    public boolean isValid;
     private MainDeck mainDeck;
-    protected ArrayList<Card> userCardsNotInDeck;
+    protected ArrayList<Card> userCardsAvailableToAdd;
 
 
     public Deck(String name) {
         setName(name);
         sideDeck = new SideDeck(name);
         mainDeck = new MainDeck(name);
-        userCardsNotInDeck = new ArrayList<>();
+        userCardsAvailableToAdd = new ArrayList<>();
         for (Card card :  User.currentUser.getUserCards()) {
-            userCardsNotInDeck.add((Card) card.clone());
+            userCardsAvailableToAdd.add((Card) card.clone());
         }
     }
 
@@ -30,7 +30,6 @@ public class Deck implements Prototype{
         Deck deck = new Deck(this.getName());
         deck.mainDeck = (MainDeck) this.mainDeck.clone();
         deck.sideDeck = (SideDeck) this.sideDeck.clone();
-        deck.isValid = this.isValid ;
         return deck;
     }
 
@@ -52,7 +51,11 @@ public class Deck implements Prototype{
     }
 
     public String getValidity() {
-        return isValid ? "valid" : "invalid";
+        return mainDeck.allCards.size()>=40 ? "valid" : "invalid";
+    }
+
+    public boolean isValid() {
+        return mainDeck.allCards.size() >= 40 ? true: false;
     }
 
     public void deleteDeck() {
@@ -60,14 +63,14 @@ public class Deck implements Prototype{
     }
 
     public boolean doesDeckHaveThreeOfThisCard(String cardName) {
-        int counter = 0;
+        AtomicInteger counter = new AtomicInteger();
         for (Card card : this.mainDeck.allCards) {
-            if (card.getName().matches(cardName)) counter++;
+            if (card.getName().equalsIgnoreCase(cardName)) counter.getAndIncrement();
         }
         for (Card card : this.sideDeck.allCards) {
-            if (card.getName().matches(cardName)) counter++;
+            if (card.getName().equalsIgnoreCase(cardName)) counter.getAndIncrement();
         }
-        if (counter == 3) return true;
+        if (counter.get() == 3) return true;
         else return false;
     }
 
@@ -75,36 +78,28 @@ public class Deck implements Prototype{
         if (deckType.equals("side")) {
             sideDeck.addCardToDeck(cardName);
         } else
-            sideDeck.addCardToDeck(cardName);
+            mainDeck.addCardToDeck(cardName);
     }
 
     public void removeCardFromDeck(String cardName, String deckType) {
         if (deckType.equals("side")) {
             sideDeck.removeCardFromDeck(cardName);
         } else
-            sideDeck.removeCardFromDeck(cardName);
+            mainDeck.removeCardFromDeck(cardName);
     }
 
-//    public static Deck getRandomDeck() {
-//
-//    }
+    public boolean isThisCardAvailable(String cardName) {
+        for (Card card : userCardsAvailableToAdd) {
+            if (card.getName().equalsIgnoreCase(cardName))
+                return true;
+        }
+        return false;
+    }
+
 
     public void shuffleDeck() {
         Collections.shuffle(this.mainDeck.allCards);
         Collections.shuffle(this.sideDeck.allCards);
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "Deck:\n" +
-                "Side/Main deck:\n" +
-                "Monsters:\n" +
-                //todo mosters +
-                "Spell and Trap:\n"
-                //todo spell and trap +
-                ;
     }
 
 }
