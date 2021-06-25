@@ -42,7 +42,7 @@ public class MonsterCard extends Card {
         if(DuelMenuController.getInstance().game.getSelectedCard() == null){
             System.out.println("no card is selected yet");
         }
-        else if(){
+        else if(DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().getCardInLocation("monster") == monster){
             System.out.println("you can’t attack with this card");
         }
         else if(DuelMenuController.getInstance().game.getPhase() != Phases.BATTLE){
@@ -51,12 +51,12 @@ public class MonsterCard extends Card {
         else if(monster.getAttacked() == true){
             System.out.println("this card already attacked");
         }
-        else if(DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().getMonsterZone().equals(monster)){
+        else if(DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().getMonsterZone().equals(null)){
             System.out.println("there is no card to attack here");
         }
         else if(monster != null) {
             attackMonster(monster);
-        }
+        }else
         this.setAttacked(true);
     }
 
