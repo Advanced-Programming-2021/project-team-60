@@ -1,5 +1,6 @@
 package model.cards.spellcards;
 
+import model.User;
 import model.cards.monstercards.MonsterCard;
 
 public class Yami extends SpellCard{
@@ -9,9 +10,10 @@ public class Yami extends SpellCard{
         this.icon = Icon.FIELD;
         this.type = CardType.SPELL;
     }
-
     public void action(MonsterCard monster){
-
+        User user = User.currentUser;
+        user.getBoard().addCardFromDeckToHand();
+        user.getBoard().addCardFromDeckToHand();
     }
 
     @Override

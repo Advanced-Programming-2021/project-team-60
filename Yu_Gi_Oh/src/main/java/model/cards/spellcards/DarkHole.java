@@ -1,6 +1,10 @@
 package model.cards.spellcards;
 
+import controller.DuelMenuController;
 import model.cards.monstercards.MonsterCard;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DarkHole extends Raigeki{
     public DarkHole(String name, String description, int price) {
@@ -11,7 +15,8 @@ public class DarkHole extends Raigeki{
     }
 
     public void action(MonsterCard monster){
-
+        super.action(monster);
+        DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().putCardInGraveyard(monster);
     }
 
     @Override

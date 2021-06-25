@@ -1,5 +1,7 @@
 package model.cards.spellcards;
 
+import controller.DuelMenuController;
+import model.cards.Card;
 import model.cards.monstercards.MonsterCard;
 
 public class ChangeOfHeart extends SpellCard{
@@ -11,7 +13,10 @@ public class ChangeOfHeart extends SpellCard{
     }
 
     public void action(MonsterCard monster){
+        DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().removeCardFromMonsterZone(monster);
+        monster.setHidden(false);
 
+        DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().putCardInMonsterZone(monster);
     }
 
     @Override
