@@ -36,3 +36,27 @@ class CardNotSelect extends CardHandler {
     }
 }
 
+class CardCantBeSummoned extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(card instanceof MonsterCard) ||
+                (((MonsterCard) card).getCardType() == CardType.RITUAL) ||
+                card.getLocation() != Location.HAND ) {
+            Controller.print("you can’t summon this card");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardCantBeSet extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (card.getLocation() != Location.HAND) {
+            Controller.print("you can’t set this card");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
