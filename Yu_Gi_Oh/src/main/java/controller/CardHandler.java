@@ -130,4 +130,48 @@ class CardAlreadySetOrSummoned extends CardHandler {
         return handleNext(card);
     }
 }
+class CardPositionCantBeChanged extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (card.getLocation() != Location.MONSTER_ZONE) {
+            Controller.print("you can’t change this card position");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardCantBeFlipped extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (((MonsterCard) card).getPosition() != Position.DEFENCE || !card.isHidden() ||
+                Game.getCurrentGame().isCardPutInThisTurn(card) || !Game.getCurrentGame().getCurrentPlayer().getBoard().isCardForPlayer(card) ) {
+            Controller.print("you can’t flip summon this card");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardCantAttack extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (card.getLocation() != Location.MONSTER_ZONE || card.isHidden()) {
+            Controller.print("you can’t attack with this card");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class MonsterAttackNotAllowedInCurrentPhase extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(Game.getCurrentGame().getPhase() == Phases.BATTLE)) {
+            Controller.print("you can’t do this action in this phase");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
 
