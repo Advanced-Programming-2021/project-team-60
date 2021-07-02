@@ -1,4 +1,5 @@
 package controller;
+
 import model.cards.Card;
 import model.cards.Location;
 import model.cards.Position;
@@ -41,7 +42,7 @@ class CardCantBeSummoned extends CardHandler {
     public boolean handle(Card card) {
         if (!(card instanceof MonsterCard) ||
                 (((MonsterCard) card).getCardType() == CardType.RITUAL) ||
-                card.getLocation() != Location.HAND ) {
+                card.getLocation() != Location.HAND) {
             Controller.print("you can’t summon this card");
             return false;
         }
@@ -59,6 +60,7 @@ class CardCantBeSet extends CardHandler {
         return handleNext(card);
     }
 }
+
 class MonsterSummonNotAllowedInCurrentPhase extends CardHandler {
     @Override
     public boolean handle(Card card) {
@@ -91,6 +93,7 @@ class CardSetOrChangeNotAllowedInCurrentPhase extends CardHandler {
         return handleNext(card);
     }
 }
+
 class FullMonsterZone extends CardHandler {
     Card[] monsterZone = Game.getCurrentGame().getCurrentPlayer().getBoard().getMonsterZone();
 
@@ -130,6 +133,7 @@ class CardAlreadySetOrSummoned extends CardHandler {
         return handleNext(card);
     }
 }
+
 class CardPositionCantBeChanged extends CardHandler {
     @Override
     public boolean handle(Card card) {
@@ -145,7 +149,7 @@ class CardCantBeFlipped extends CardHandler {
     @Override
     public boolean handle(Card card) {
         if (((MonsterCard) card).getPosition() != Position.DEFENCE || !card.isHidden() ||
-                Game.getCurrentGame().isCardPutInThisTurn(card) || !Game.getCurrentGame().getCurrentPlayer().getBoard().isCardForPlayer(card) ) {
+                Game.getCurrentGame().isCardPutInThisTurn(card) || !Game.getCurrentGame().getCurrentPlayer().getBoard().isCardForPlayer(card)) {
             Controller.print("you can’t flip summon this card");
             return false;
         }
@@ -172,6 +176,80 @@ class MonsterAttackNotAllowedInCurrentPhase extends CardHandler {
             return false;
         }
         return handleNext(card);
+    }
+}
+
+class MonsterAlreadyAttacked extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (((MonsterCard) card).hasAttacked()) {
+            Controller.print("this card already attacked");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+
+class CardCantAttackDirectly extends CardHandler {
+
+    @Override
+    public boolean handle(Card card) {
+
+        MonsterCard[] monsterZone = Game.getCurrentGame().getOpponentPlayer().getBoard().getMonsterZone();
+        boolean isMonsterZoneEmpty = true;
+        for (MonsterCard monsterCard : monsterZone) {
+            if (monsterCard != null) {
+                isMonsterZoneEmpty = false;
+                break;
+            }
+        }
+        if (!isMonsterZoneEmpty) {
+            Controller.print("you can’t attack the opponent directly");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardEffectCantBeActivated extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(card instanceof SpellCard)) {
+            Controller.print("activate effect is only for spell cards.");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class EffectActivationNotAllowedInCurrentPhase extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(Game.getCurrentGame().getPhase() == Phases.MAIN_1 || Game.getCurrentGame().getPhase() == Phases.MAIN_2)) {
+            Controller.print("you can’t activate an effect on this turn");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardAlreadyActivated extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (card.getHasBeenActivated()) {
+            Controller.print("you have already activated this card");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class SpellPreparationNotDone extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        //todo
+        return false;
     }
 }
 
