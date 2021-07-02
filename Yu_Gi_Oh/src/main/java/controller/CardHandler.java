@@ -59,4 +59,75 @@ class CardCantBeSet extends CardHandler {
         return handleNext(card);
     }
 }
+class MonsterSummonNotAllowedInCurrentPhase extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(Game.getCurrentGame().getPhase() == Phases.MAIN_1 || Game.getCurrentGame().getPhase() == Phases.MAIN_2)) {
+            Controller.print("action not allowed in this phase");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class MonsterFlipSummonNotAllowedInCurrentPhase extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(Game.getCurrentGame().getPhase() == Phases.MAIN_1 || Game.getCurrentGame().getPhase() == Phases.MAIN_2)) {
+            Controller.print("you can’t do this action in this phase");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardSetOrChangeNotAllowedInCurrentPhase extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (!(Game.getCurrentGame().getPhase() == Phases.MAIN_1 || Game.getCurrentGame().getPhase() == Phases.MAIN_2)) {
+            Controller.print("you can’t do this action in this phase");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+class FullMonsterZone extends CardHandler {
+    Card[] monsterZone = Game.getCurrentGame().getCurrentPlayer().getBoard().getMonsterZone();
+
+    @Override
+    public boolean handle(Card card) {
+        if ((monsterZone[0] != null) && (monsterZone[1] != null) && (monsterZone[2] != null)
+                && (monsterZone[3] != null) && (monsterZone[4] != null)) {
+            Controller.print("monster card zone is full");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+
+class FullSpellAndTrapZone extends CardHandler {
+    Card[] spellAndTrapZone = Game.getCurrentGame().getCurrentPlayer().getBoard().getSpellAndTrapZone();
+
+    @Override
+    public boolean handle(Card card) {
+        if ((spellAndTrapZone[1] != null) && (spellAndTrapZone[2] != null) && (spellAndTrapZone[3] != null)
+                && (spellAndTrapZone[4] != null) && (spellAndTrapZone[0] != null)) {
+            Controller.print("spell card zone is full");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
+
+class CardAlreadySetOrSummoned extends CardHandler {
+    @Override
+    public boolean handle(Card card) {
+        if (Game.getCurrentGame().hasCardBeenSetOrSummoned()) {
+            Controller.print("you already summoned/set on this turn");
+            return false;
+        }
+        return handleNext(card);
+    }
+}
 
