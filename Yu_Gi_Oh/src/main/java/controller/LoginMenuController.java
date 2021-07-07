@@ -34,6 +34,7 @@ public class LoginMenuController extends Controller {
             }
             new User(username, password, nickname);
             print("user created successfully!");
+            FileWriterAndReader.getInstance().write();
         }
     }
 

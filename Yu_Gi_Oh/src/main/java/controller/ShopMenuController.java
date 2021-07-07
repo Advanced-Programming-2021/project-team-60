@@ -1,5 +1,6 @@
 package controller;
 
+import model.Deck;
 import model.User;
 import model.cards.Card;
 import model.cards.CardFactory;
@@ -32,7 +33,12 @@ public class ShopMenuController extends Controller {
             else {
                 Card card = CardFactory.getCardByCardName(cardName);
                 if (User.currentUser.getCoins() < card.getPrice()) print("not enough money");
-                else User.currentUser.addCard(card);
+                else {
+                    for (Deck deck : User.currentUser.getUserDecks().getAllDecks()) {
+                        deck.addCardToUserCardsAvailableToAdd(card);
+                    }
+                    User.currentUser.addCard(card);
+                }
             }
         }
     }
