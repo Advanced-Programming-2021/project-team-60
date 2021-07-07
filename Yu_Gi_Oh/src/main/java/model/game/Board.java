@@ -52,10 +52,10 @@ public class Board {
     public void putCardInMonsterZone(Card card) {
         card.setLocation(Location.MONSTER_ZONE);
         for (int i = 0; i < monsterZone.length; i++) {
-         if (monsterZone[i] == null) {
-             monsterZone[i] = (MonsterCard) card;
-             break;
-         }
+            if (monsterZone[i] == null) {
+                monsterZone[i] = (MonsterCard) card;
+                break;
+            }
         }
     }
 
@@ -78,18 +78,18 @@ public class Board {
         return graveyard;
     }
 
-    public Card putFieldZone() {
+    public Card getFieldZone() {
         return fieldZone;
     }
 
-    public Card[] putSpellAndTrapZone() {
-        return spellAndTrapZone;
-    }
 
     public MonsterCard[] getMonsterZone() {
         return monsterZone;
     }
 
+    public Card[] getSpellAndTrapZone() {
+        return spellAndTrapZone;
+    }
 
     public ArrayList<Card> getHand() {
         return hand;
@@ -105,7 +105,8 @@ public class Board {
         card.setLocation(null);
         for (int i = 0; i < monsterZone.length; i++) {
             if (monsterZone[i] == card) monsterZone[i] = null;
-        }    }
+        }
+    }
 
     public void removeCardFromHand(Card card) {
         card.setLocation(null);
@@ -148,13 +149,14 @@ public class Board {
         return null;
     }
 
-    public void addCardFromDeckToHand() {
+    public String addCardFromDeckToHand() {
         if (deck.getMainDeck().getAllCards().size() > 0) {
             Card card = deck.getMainDeck().getAllCards().get((deck.getMainDeck().getAllCards().size() - 1));
             removeCardFromMainDeck(card);
             putCardInHand(card);
+            return "done";
         } else
-            Game.getCurrentGame().endGame(Game.getCurrentGame().getOpponentPlayer());
+            return "end";
     }
 
     public String toStringAsCurrent() {
@@ -190,6 +192,23 @@ public class Board {
         }
         returnString.append("\n" + current.getUsername() + ":" + current.getLifePoint());
         return returnString.toString();
+    }
+
+    public boolean isCardForPlayer(Card card) {
+        for (Card card1 : monsterZone) {
+            if (card == card1) return true;
+        }
+        for (Card card1 : hand) {
+            if (card == card1) return true;
+        }
+        for (Card card1 : spellAndTrapZone) {
+            if (card == card1) return true;
+        }
+        for (Card card1 : graveyard) {
+            if (card == card1) return true;
+        }
+        if (card == fieldZone) return true;
+        return false;
     }
 
     public String toStringAsOpponent() {
