@@ -32,7 +32,6 @@ public class MainDeck implements Prototype {
             }
         }
         userCardsAvailableToAdd.remove(card);
-
     }
 
     public void removeCardFromDeck(String cardName) {

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class Deck implements Prototype{
+public class Deck implements Prototype {
     private SideDeck sideDeck;
     private String name;
     private MainDeck mainDeck;
@@ -20,7 +20,7 @@ public class Deck implements Prototype{
         sideDeck = new SideDeck(name);
         mainDeck = new MainDeck(name);
         userCardsAvailableToAdd = new ArrayList<>();
-        for (Card card :  User.currentUser.getUserCards()) {
+        for (Card card : User.currentUser.getUserCards()) {
             userCardsAvailableToAdd.add((Card) card.clone());
         }
     }
@@ -51,15 +51,20 @@ public class Deck implements Prototype{
     }
 
     public String getValidity() {
-        return mainDeck.allCards.size()>=40 ? "valid" : "invalid";
+        return mainDeck.allCards.size() >= 40 ? "valid" : "invalid";
     }
+
 
     public boolean isValid() {
-        return mainDeck.allCards.size() >= 40 ? true: false;
+        return mainDeck.allCards.size() >= 40 ? true : false;
     }
 
-    public void deleteDeck() {
+    public void addCardToUserCardsAvailableToAdd(Card card) {
+        userCardsAvailableToAdd.add(card);
+    }
 
+    public ArrayList<Card> getUserCardsAvailableToAdd() {
+        return userCardsAvailableToAdd;
     }
 
     public boolean doesDeckHaveThreeOfThisCard(String cardName) {

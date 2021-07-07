@@ -54,7 +54,7 @@ public class SideDeck implements Prototype {
         return sideDeck;
     }
 
-     public Boolean doesDeckHaveThisCard(String cardName) {
+    public Boolean doesDeckHaveThisCard(String cardName) {
         if (allCards.size() > 0) {
             for (Card card : allCards) {
                 if (card.getName().equals(cardName)) return true ;
@@ -62,7 +62,7 @@ public class SideDeck implements Prototype {
             return false;
         }
         return false;
-     }
+    }
 
 
     public boolean isDeckFull() {
