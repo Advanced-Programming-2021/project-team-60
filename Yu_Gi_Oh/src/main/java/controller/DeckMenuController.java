@@ -33,7 +33,7 @@ public class DeckMenuController extends Controller {
         if (CardFactory.getCardByCardName(cardName) != null)
             print(CardFactory.getCardByCardName(cardName).toString());
         else
-            print("card with name "+cardName+" does not exist");
+            print("card with name " + cardName + " does not exist");
     }
 
     private void createDeck(String[] commandSplit) {
@@ -43,6 +43,7 @@ public class DeckMenuController extends Controller {
             new Deck(commandSplit[2]);
             User.currentUser.getUserDecks().createDeck(commandSplit[2]);
             print("deck created successfully!");
+            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -52,6 +53,7 @@ public class DeckMenuController extends Controller {
         else {
             User.currentUser.getUserDecks().deleteDeck(commandSplit[2]);
             print("deck deleted successfully!");
+            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -61,6 +63,7 @@ public class DeckMenuController extends Controller {
         else {
             User.currentUser.getUserDecks().setActiveDeck(commandSplit[2]);
             print("deck activated successfully!");
+            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -84,8 +87,8 @@ public class DeckMenuController extends Controller {
             print("there are already three cards with name " + cardName + " in deck " + deckName);
         else {
             User.currentUser.getUserDecks().getDeckByName(deckName).addCardToDeck(cardName, deckType);
-            User.currentUser.removeCard(cardName);
             print("card added to deck successfully");
+            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -107,6 +110,7 @@ public class DeckMenuController extends Controller {
             User.currentUser.getUserDecks().getDeckByName(deckName).removeCardFromDeck(cardName, deckType);
             User.currentUser.addCard(CardFactory.getCardByCardName(cardName));
             print("card removed form deck successfully");
+            FileWriterAndReader.getInstance().write();
         }
     }
 
