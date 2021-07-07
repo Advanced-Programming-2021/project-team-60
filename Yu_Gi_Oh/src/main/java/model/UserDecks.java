@@ -33,6 +33,9 @@ public class UserDecks {
         activeDeck = getDeckByName(deckName);
     }
 
+    public ArrayList<Deck> getAllDecks() {
+        return allDecks;
+    }
 
     public String showAllDecks() {
         StringBuilder allDecksStringBuilder = new StringBuilder();

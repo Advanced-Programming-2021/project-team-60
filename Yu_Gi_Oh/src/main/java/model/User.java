@@ -14,7 +14,6 @@ public class User {
     private int score;
     private int coins;
     private ArrayList<Card> userCards;
-    private Board board;
     public static User currentUser;
     public UserDecks userDecks;
 
@@ -40,18 +39,6 @@ public class User {
         return null;
     }
 
-    public static boolean doesUsernameExist(String username) {
-        return allUsers.contains(getUserByUsername(username));
-    }
-
-    public static boolean doesNicknameExist(String nickname) {
-        for (User user : allUsers) {
-            if (user.getNickname().equals(nickname)) return true;
-        }
-        return false;
-    }
-
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -72,8 +59,8 @@ public class User {
         this.score = score;
     }
 
-    public void setBoard(Board board) {
-        this.board = board;
+    public static void setAllUsers(ArrayList<User> allUsers) {
+        User.allUsers = allUsers;
     }
 
     public String getUsername() {
@@ -88,13 +75,11 @@ public class User {
         return password;
     }
 
+
     public int getScore() {
         return score;
     }
 
-    public Board getBoard() {
-        return board;
-    }
 
     public int getCoins() {
         return coins;
@@ -116,12 +101,4 @@ public class User {
         userCards.add(card);
     }
 
-    public void removeCard(String cardName) {
-        for (Card card : userCards) {
-            if (card.getName() == cardName) {
-                userCards.remove(card);
-                return;
-            }
-        }
-    }
 }
