@@ -13,8 +13,7 @@ public class PotOfGreed extends SpellCard{
 
     public void action(MonsterCard monster){
         User user = User.currentUser;
-        user.getBoard().addCardFromDeckToHand();
-        user.getBoard().addCardFromDeckToHand();
+
     }
 
     @Override

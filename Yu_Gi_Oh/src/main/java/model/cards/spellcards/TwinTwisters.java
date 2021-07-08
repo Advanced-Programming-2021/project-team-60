@@ -1,7 +1,6 @@
 package model.cards.spellcards;
 
 
-import model.User;
 import model.cards.monstercards.MonsterCard;
 
 public class TwinTwisters extends SpellCard{
@@ -15,9 +14,7 @@ public class TwinTwisters extends SpellCard{
     }
 
     public void action(MonsterCard monster){
-        User user = User.currentUser;
-        user.getBoard().addCardFromDeckToHand();
-        user.getBoard().addCardFromDeckToHand();
+
     }
 
     @Override

@@ -3,17 +3,19 @@ package model.cards;
 
 import model.Prototype;
 import model.cards.monstercards.MonsterCard;
+import model.game.Board;
 
 
-public abstract class Card implements Prototype {
+public class Card implements Prototype {
     protected String name;
     protected String description;
     protected int price;
     protected boolean isHidden;
     protected Location location;
-    protected String type;
+    protected Boolean hasBeenActivated;
+    protected Board board;
 
-    public Card(String name, String description,int price) {
+    public Card(String name, String description, int price) {
         setName(name);
         setDescription(description);
         setPrice(price);
@@ -27,7 +29,8 @@ public abstract class Card implements Prototype {
         setPrice(price);
     }
 
-    public abstract void action(MonsterCard monster);
+    public void activateEffect() {
+    }
 
     public String getName() {
         return name;
@@ -50,6 +53,10 @@ public abstract class Card implements Prototype {
         return isHidden;
     }
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -70,6 +77,20 @@ public abstract class Card implements Prototype {
         this.location = location;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public Boolean getHasBeenActivated() {
+        return hasBeenActivated;
+    }
+
+    public void setHasBeenActivated(Boolean hasBeenActivated) {
+        this.hasBeenActivated = hasBeenActivated;
+    }
+
     @Override
-    public abstract Object clone();
+    public Object clone() {
+        return null;
+    }
 }

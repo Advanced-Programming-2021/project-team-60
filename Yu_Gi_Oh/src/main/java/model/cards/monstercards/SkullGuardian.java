@@ -9,7 +9,7 @@ public class SkullGuardian extends MonsterCard{
     }
 
     public void action(MonsterCard monster){
-        super.action(monster);
+
     }
 
     @Override

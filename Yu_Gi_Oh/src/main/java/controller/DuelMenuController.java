@@ -246,6 +246,57 @@ public class DuelMenuController extends Controller {
         return (counter.intValue() >= numberOfTributes);
     }
 
+    public void activateEffect() {
+        CardHandler cardHandler = new CardNotSelect();
+        CardEffectCantBeActivated cardEffectCantBeActivated = new CardEffectCantBeActivated();
+        EffectActivationNotAllowedInCurrentPhase effectActivationNotAllowedInCurrentPhase = new EffectActivationNotAllowedInCurrentPhase();
+        CardAlreadyActivated cardAlreadyActivated = new CardAlreadyActivated();
+        FullSpellAndTrapZone fullSpellAndTrapZone = new FullSpellAndTrapZone();
+        SpellPreparationNotDone spellPreparationNotDone = new SpellPreparationNotDone();
+        cardHandler.setNextHandler(cardEffectCantBeActivated);
+        cardEffectCantBeActivated.setNextHandler(effectActivationNotAllowedInCurrentPhase);
+        effectActivationNotAllowedInCurrentPhase.setNextHandler(cardAlreadyActivated);
+        cardAlreadyActivated.setNextHandler(fullSpellAndTrapZone);
+        fullSpellAndTrapZone.setNextHandler(spellPreparationNotDone);
+        if (cardHandler.handle(game.getSelectedCard())) {
+            Controller.print("spell activated");
+            if (game.getSelectedCard().getLocation() == Location.HAND) {
+                if (((SpellCard) game.getSelectedCard()).getIcon() == Icon.FIELD) {
+                    game.getCurrentPlayer().getBoard().putCardInGraveyard(game.getCurrentPlayer().getBoard().getFieldZone());
+                    game.getCurrentPlayer().getBoard().putCardInFieldZone(game.getSelectedCard());
+                } else
+                    game.getCurrentPlayer().getBoard().putCardInSpellAndTrapZone(game.getSelectedCard());
+                game.getCurrentPlayer().getBoard().removeCardFromHand(game.getSelectedCard());
+                game.getSelectedCard().activateEffect();
+                game.getSelectedCard().setHasBeenActivated(true);
+            }
+            game.getSelectedCard().setHidden(false);
+            game.setSelectedCard(null);
+        }
+    }
+
+    public void changePosition(String positionToChange) {
+        CardHandler monsterHandler = new CardNotSelect();
+        CardPositionCantBeChanged cardPositionCantBeChanged = new CardPositionCantBeChanged();
+        CardSetOrChangeNotAllowedInCurrentPhase monsterSetOrChangeNotAllowedInCurrentPhase = new CardSetOrChangeNotAllowedInCurrentPhase();
+        monsterHandler.setNextHandler(cardPositionCantBeChanged);
+        cardPositionCantBeChanged.setNextHandler(monsterSetOrChangeNotAllowedInCurrentPhase);
+        if (monsterHandler.handle(game.getSelectedCard())) {
+            if (((MonsterCard) game.getSelectedCard()).getPosition().getString().equalsIgnoreCase(positionToChange))
+                Controller.print("this card is already in the wanted position");
+            else if (((MonsterCard) game.getSelectedCard()).isSwitchedPosition())
+                Controller.print("you already changed this card position in this turn");
+            else {
+                ((MonsterCard) game.getSelectedCard()).switchPosition();
+                ((MonsterCard) game.getSelectedCard()).setSwitchedPosition(true);
+                Controller.print("monster card position changed successfully");
+                game.setSelectedCard(null);
+            }
+        }
+        game.setSelectedCard(null);
+    }
+
+
 
 
     public void flipSummon() {
@@ -299,57 +350,6 @@ public class DuelMenuController extends Controller {
             ((MonsterCard) game.getSelectedCard()).setHasAttacked(true);
             game.setSelectedCard(null);
         }
-    }
-
-    public void activateEffect() {
-        CardHandler cardHandler = new CardNotSelect();
-        CardEffectCantBeActivated cardEffectCantBeActivated = new CardEffectCantBeActivated();
-        EffectActivationNotAllowedInCurrentPhase effectActivationNotAllowedInCurrentPhase = new EffectActivationNotAllowedInCurrentPhase();
-        CardAlreadyActivated cardAlreadyActivated = new CardAlreadyActivated();
-        FullSpellAndTrapZone fullSpellAndTrapZone = new FullSpellAndTrapZone();
-        SpellPreparationNotDone spellPreparationNotDone = new SpellPreparationNotDone();
-        cardHandler.setNextHandler(cardEffectCantBeActivated);
-        cardEffectCantBeActivated.setNextHandler(effectActivationNotAllowedInCurrentPhase);
-        effectActivationNotAllowedInCurrentPhase.setNextHandler(cardAlreadyActivated);
-        cardAlreadyActivated.setNextHandler(fullSpellAndTrapZone);
-        fullSpellAndTrapZone.setNextHandler(spellPreparationNotDone);
-        if (cardHandler.handle(game.getSelectedCard())) {
-            Controller.print("spell activated");
-            if (game.getSelectedCard().getLocation() == Location.HAND) {
-                if (((SpellCard) game.getSelectedCard()).getIcon() == Icon.FIELD) {
-                    game.getCurrentPlayer().getBoard().putCardInGraveyard(game.getCurrentPlayer().getBoard().getFieldZone());
-                    game.getCurrentPlayer().getBoard().putCardInFieldZone(game.getSelectedCard());
-                } else
-                    game.getCurrentPlayer().getBoard().putCardInSpellAndTrapZone(game.getSelectedCard());
-                game.getCurrentPlayer().getBoard().removeCardFromHand(game.getSelectedCard());
-                game.getSelectedCard().activateEffect();
-                game.getSelectedCard().setHasBeenActivated(true);
-            }
-            game.getSelectedCard().setHidden(false);
-            game.setSelectedCard(null);
-        }
-
-    }
-
-    public void changePosition(String positionToChange) {
-        CardHandler monsterHandler = new CardNotSelect();
-        CardPositionCantBeChanged cardPositionCantBeChanged = new CardPositionCantBeChanged();
-        CardSetOrChangeNotAllowedInCurrentPhase monsterSetOrChangeNotAllowedInCurrentPhase = new CardSetOrChangeNotAllowedInCurrentPhase();
-        monsterHandler.setNextHandler(cardPositionCantBeChanged);
-        cardPositionCantBeChanged.setNextHandler(monsterSetOrChangeNotAllowedInCurrentPhase);
-        if (monsterHandler.handle(game.getSelectedCard())) {
-            if (((MonsterCard) game.getSelectedCard()).getPosition().getString().equalsIgnoreCase(positionToChange))
-                Controller.print("this card is already in the wanted position");
-            else if (((MonsterCard) game.getSelectedCard()).isSwitchedPosition())
-                Controller.print("you already changed this card position in this turn");
-            else {
-                ((MonsterCard) game.getSelectedCard()).switchPosition();
-                ((MonsterCard) game.getSelectedCard()).setSwitchedPosition(true);
-                Controller.print("monster card position changed successfully");
-                game.setSelectedCard(null);
-            }
-        }
-        game.setSelectedCard(null);
     }
 
 

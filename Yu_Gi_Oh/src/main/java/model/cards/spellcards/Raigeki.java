@@ -18,7 +18,9 @@ public class Raigeki extends SpellCard{
 
     public void action(MonsterCard monster){
         Player opponent = DuelMenuController.getInstance().game.getOpponentPlayer();
-        opponent.getBoard().putCardInGraveyard(monster);
+        ArrayList<MonsterCard> monsters = (ArrayList<MonsterCard>) Arrays.asList(opponent.getBoard().getMonsterZone());
+
+       // opponent.getBoard().putCardInGraveyard(new ArrayList<MonsterCard>(monsters));
     }
 
 

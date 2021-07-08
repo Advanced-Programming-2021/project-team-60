@@ -28,9 +28,11 @@ public class Board {
         }
         for (Card card : deck.getMainDeck().getAllCards()) {
             card.setLocation(Location.DECK);
+            card.setBoard(this);
         }
         for (Card card : deck.getSideDeck().getAllCards()) {
             card.setLocation(Location.DECK);
+            card.setBoard(this);
         }
     }
 

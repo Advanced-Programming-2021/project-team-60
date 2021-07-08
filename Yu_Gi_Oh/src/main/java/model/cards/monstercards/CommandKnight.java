@@ -1,5 +1,7 @@
 package model.cards.monstercards;
 
+import model.game.Game;
+
 public class CommandKnight extends MonsterCard {
     public CommandKnight(String name, String description, int level, int attackPoint, int defencePoint,int price) {
         super(name, description, level, attackPoint, defencePoint,price);
@@ -8,9 +10,7 @@ public class CommandKnight extends MonsterCard {
         this.monsterType = MonsterType.WARRIOR;
     }
 
-    public void action(MonsterCard monster){
-        super.action(monster);
-    }
+
 
     @Override
     public String toString() {

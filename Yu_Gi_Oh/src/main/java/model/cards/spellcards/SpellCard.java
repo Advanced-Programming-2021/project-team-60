@@ -1,5 +1,4 @@
 package model.cards.spellcards;
-import model.Prototype;
 import model.cards.Card;
 import model.cards.monstercards.MonsterCard;
 
@@ -7,7 +6,6 @@ public abstract class SpellCard extends Card {
     protected Status status;
     protected Icon icon;
     protected CardType type;
-
     public SpellCard(String name, String description, int price){
         super(name, description, price);
     }
@@ -20,6 +18,10 @@ public abstract class SpellCard extends Card {
                 "\nTrap" +
                 "\nType: " + type +
                 "\nDescription: " + getDescription() ;
+    }
+
+    public Icon getIcon() {
+        return icon;
     }
 
     @Override

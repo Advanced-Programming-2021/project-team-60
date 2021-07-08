@@ -9,7 +9,7 @@ public class YomiShip extends MonsterCard{
     }
 
     public void action(MonsterCard monster){
-        super.action(monster);
+
     }
 
     @Override

@@ -17,14 +17,17 @@ public class DuelMenu extends Menu {
         return instance;
     }
 
-    public int selectMonstersToTribute() {
+    public String selectMonstersToTribute() {
         print("enter the tribute location number");
         String nextLine = scan.nextLine();
-        if (nextLine.matches("\\d"))
-            return Integer.parseInt(nextLine);
-        else
-            selectMonstersToTribute();
-        return 0;
+        return nextLine;
+    }
+
+    public void graveyard() {
+        String nextLine = scan.nextLine();
+        while (!nextLine.equalsIgnoreCase("back"))
+            nextLine = scan.nextLine();
+        return;
     }
 
     @Override

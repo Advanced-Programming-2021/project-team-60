@@ -1,6 +1,5 @@
 package model.cards.monstercards;
 
-//monsters
 public class AlexandriteDragon extends MonsterCard{
     public AlexandriteDragon(String name, String description, int level, int attackPoint, int defencePoint,int price) {
         super(name, description, level, attackPoint, defencePoint,price);
@@ -10,7 +9,6 @@ public class AlexandriteDragon extends MonsterCard{
     }
 
     public void action(MonsterCard monster){
-        super.action(monster);
     }
 
     @Override

@@ -1,16 +1,11 @@
 package model.cards.monstercards;
+
+import controller.Controller;
 import controller.DuelMenuController;
-import model.Prototype;
-import model.User;
 import model.cards.Card;
 import model.cards.Position;
-import model.game.Board;
 import model.game.Game;
-import model.game.Phases;
 import model.game.Player;
-import view.menus.DuelMenu;
-
-import java.lang.reflect.InvocationTargetException;
 
 
 public class MonsterCard extends Card {
@@ -18,129 +13,113 @@ public class MonsterCard extends Card {
     protected int defencePoint;
     protected int attackPoint;
     protected boolean switchedPosition;
-    protected boolean attacked;
+    protected boolean hasAttacked;
     protected Position position = Position.DEFENCE;
     protected CardType cardType;
     protected Attribute attribute;
     protected MonsterType monsterType;
 
-    public MonsterCard(String name, String description, int level, int attackPoint, int defencePoint,int price){
-        super(name, description,price);
+    public MonsterCard(String name, String description, int level, int attackPoint, int defencePoint, int price) {
+        super(name, description, price);
         setLevel(level);
         setAttackPoint(attackPoint);
         setDefencePoint(defencePoint);
-        setAttacked(false);
+        setHasAttacked(false);
         setSwitchedPosition(false);
     }
 
-    public void action(){
-        attackLifePoint();
-        this.setAttacked(true);
-    }
 
-    public void action(MonsterCard monster){
-        if(DuelMenuController.getInstance().game.getSelectedCard() == null){
-            System.out.println("no card is selected yet");
-        }
-        else if(DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().getCardInLocation("monster") == monster){
-            System.out.println("you can’t attack with this card");
-        }
-        else if(DuelMenuController.getInstance().game.getPhase() != Phases.BATTLE){
-            System.out.println("you can’t do this action in this phase");
-        }
-        else if(monster.getAttacked() == true){
-            System.out.println("this card already attacked");
-        }
-        else if(DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().getMonsterZone().equals(null)){
-            System.out.println("there is no card to attack here");
-        }
-        else if(monster != null) {
-            attackMonster(monster);
-        }else
-        this.setAttacked(true);
-    }
-
-    public void attackMonster(MonsterCard target){
-
+    public void attackMonster(MonsterCard target) {
         Player active = DuelMenuController.getInstance().game.getCurrentPlayer();
         Player opponent = DuelMenuController.getInstance().game.getOpponentPlayer();
-
         if (target.getPosition() == Position.ATTACK) {
-
             if (this.getAttackPoint() > target.getAttackPoint()) {
-
                 int damage = this.getAttackPoint() - target.getAttackPoint();
-                opponent.getBoard().putCardInGraveyard(target);
-                System.out.println("your opponent’s monster is destroyed and your opponent receives\n" +
-                        "<damage> battle damage");
+                Controller.print("your opponent’s monster is destroyed and your opponent receives " +
+                        +damage + " battle damage");
                 int lp = opponent.getLifePoint();
+                if (lp - damage <= 0) {
+                    opponent.setLifePoint(0);
+                    Game.getCurrentGame().goToNextRound(active, opponent);
+                    return;
+                }
                 opponent.setLifePoint(lp - damage);
-
+                opponent.getBoard().removeCardFromMonsterZone(target);
+                opponent.getBoard().putCardInGraveyard(target);
             } else if (this.getAttackPoint() == target.getAttackPoint()) {
-
                 active.getBoard().putCardInGraveyard(this);
                 opponent.getBoard().putCardInGraveyard(target);
-                System.out.println("both you and your opponent monster cards are destroyed and no\n" +
-                        "one receives damage");
-                this.setAttacked(true);
-
+                Controller.print("both you and your opponent monster cards are destroyed and no one receives damage");
+                opponent.getBoard().removeCardFromMonsterZone(target);
+                opponent.getBoard().putCardInGraveyard(target);
+                active.getBoard().removeCardFromMonsterZone(this);
+                active.getBoard().putCardInGraveyard(this);
             } else {
-
                 int damage = target.getAttackPoint() - this.getAttackPoint();
                 active.getBoard().removeCardFromMonsterZone(this);
                 active.getBoard().putCardInMonsterZone(this);
+                Controller.print("Your monster card is destroyed and you received " + damage + " battle damage");
                 int lp = active.getLifePoint();
+                if (lp - damage <= 0) {
+                    active.setLifePoint(0);
+                    Game.getCurrentGame().goToNextRound(opponent, active);
+                    return;
+                }
                 active.setLifePoint(lp - damage);
-                System.out.println("Your monster card is destroyed and you received <damage> battle\n" +
-                        "damage");
-
+                active.getBoard().removeCardFromMonsterZone(this);
+                active.getBoard().putCardInGraveyard(this);
             }
-
+        } else if (this.getAttackPoint() > target.getDefencePoint()) {
+            if (target.isHidden)
+                Controller.print("opponent’s monster card was " + target.getName() + " and the defense position monster is destroyed");
+            else Controller.print("the defense position monster is destroyed");
+            opponent.getBoard().removeCardFromMonsterZone(target);
+            opponent.getBoard().putCardInGraveyard(target);
+        } else if (this.getAttackPoint() == target.getAttackPoint()) {
+            this.setHidden(true);
+            if (target.isHidden)
+                Controller.print("opponent’s monster card was " + target.getName() + " and no card is destroyed");
+            else Controller.print("no card is destroyed");
         } else {
-
-            if (this.getAttackPoint() > target.getDefencePoint()) {
-                opponent.getBoard().removeCardFromMonsterZone(target);
-                opponent.getBoard().putCardInGraveyard(target);
-                this.setAttacked(true);
-                System.out.println("no card is destroyed and you received <damage> battle damage");
-
-            } else if (this.getAttackPoint() == target.getAttackPoint()) {
-
-                this.setAttacked(true);
-                this.setHidden(true);
-                System.out.println("no card is destroyed");
-
-            } else {
-
-                int damage = target.getDefencePoint() - this.getAttackPoint();
-                int lp = active.getLifePoint();
-                active.setLifePoint(lp - damage);
-                this.setHidden(true);
-                System.out.println("the defense position monster is destroyed");
-
+            int damage = target.getDefencePoint() - this.getAttackPoint();
+            int lp = active.getLifePoint();
+            active.setLifePoint(lp - damage);
+            this.setHidden(true);
+            if (target.isHidden)
+                Controller.print("opponent’s monster card was " + target.getName() + " and no card is destroyed and you received " + damage + " battle damage");
+            else Controller.print("no card is destroyed and you received " + damage + " battle damage");
+            if (lp - damage <= 0) {
+                active.setLifePoint(0);
+                Game.getCurrentGame().goToNextRound(opponent, active);
+                return;
             }
+            active.setLifePoint(lp - damage);
         }
-
     }
 
-    public void switchPosition(){
-        if(position == Position.ATTACK){
+    public void switchPosition() {
+        if (position == Position.ATTACK) {
             position = Position.DEFENCE;
-            setHidden(true);
-        }
-        else{
+            setHidden(false);
+        } else {
             position = Position.ATTACK;
             setHidden(false);
         }
     }
 
-    public void attackLifePoint(){
-        int lifePoint = DuelMenuController.getInstance().game.getOpponentPlayer().getLifePoint();
+    public void attackLifePoint() {
+        int lifePoint = Game.getCurrentGame().getOpponentPlayer().getLifePoint();
+        Controller.print("you opponent receives " + this.attackPoint + " battle damage");
+        if ((lifePoint - this.attackPoint) <= 0) {
+            Game.getCurrentGame().getOpponentPlayer().setLifePoint(0);
+            Game.getCurrentGame().goToNextRound(Game.getCurrentGame().getCurrentPlayer(), Game.getCurrentGame().getOpponentPlayer());
+            return;
+        }
         DuelMenuController.getInstance().game.getOpponentPlayer().setLifePoint(lifePoint - this.getAttackPoint());
     }
 
-    public void setAttacked(boolean attacked) {
-        this.attacked = attacked;
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
     }
 
     public void setLevel(int level) {
@@ -159,17 +138,18 @@ public class MonsterCard extends Card {
         this.switchedPosition = switchedPosition;
     }
 
-    public boolean isAttacked() {
-        return attacked;
+    public boolean hasAttacked() {
+        return hasAttacked;
     }
 
-    public void setHidden(boolean hidden){
+    public void setHidden(boolean hidden) {
         super.setHidden(hidden);
     }
 
-    public void setPosition(Position position){
+    public void setPosition(Position position) {
         this.position = position;
     }
+
     public int getLevel() {
         return level;
     }
@@ -195,8 +175,8 @@ public class MonsterCard extends Card {
         return cardType;
     }
 
-    public boolean getAttacked(){
-        return attacked;
+    public boolean getHasAttacked() {
+        return hasAttacked;
     }
 
 
@@ -204,11 +184,11 @@ public class MonsterCard extends Card {
     public String toString() {
         return
                 "Name: " + getName() +
-                "\nLevel: " + level +
-                "\nType: " + monsterType +
-                "\nATK: " + attackPoint +
-                "\nDEF: " + defencePoint +
-                "\nDescription:" + getDescription();
+                        "\nLevel: " + level +
+                        "\nType: " + monsterType +
+                        "\nATK: " + attackPoint +
+                        "\nDEF: " + defencePoint +
+                        "\nDescription:" + getDescription();
     }
 
     @Override

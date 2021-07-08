@@ -1,6 +1,7 @@
 package view.menus;
 
 import controller.LoginMenuController;
+import javafx.stage.Stage;
 import model.User;
 
 import java.util.ArrayList;
@@ -20,8 +21,7 @@ public class LoginMenu extends Menu {
     }
 
     public static LoginMenu getInstance() {
-        if (instance == null) return new LoginMenu(null);
-        else return instance;
+        return instance;
     }
 
     @Override
@@ -30,4 +30,8 @@ public class LoginMenu extends Menu {
         runMenuCommands();
     }
 
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//
+//    }
 }

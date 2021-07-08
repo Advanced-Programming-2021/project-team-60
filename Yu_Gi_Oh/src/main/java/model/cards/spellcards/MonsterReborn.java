@@ -1,7 +1,5 @@
 package model.cards.spellcards;
 
-import controller.DuelMenuController;
-import model.cards.Position;
 import model.cards.monstercards.MonsterCard;
 
 public class MonsterReborn extends SpellCard {
@@ -14,25 +12,7 @@ public class MonsterReborn extends SpellCard {
     }
 
     public void action(MonsterCard monster){
-        MonsterCard activeStongest = DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().strongestMonsterInGraveyard();
-        MonsterCard opponentStongest = DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().strongestMonsterInGraveyard();
 
-        if (opponentStongest.getAttackPoints() < activeStongest
-                .getAttackPoints()) {
-
-            DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().putCardInMonsterZone(activeStongest);
-
-            DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().removeCardFromGraveyard(activeStongest);
-
-            activeStongest.setPosition(Position.FIELD);
-
-        } else {
-
-            DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().putFieldZone(opponentStongest);
-            DuelMenuController.getInstance().game.getOpponentPlayer().getBoard().putFieldZone(opponentStongest);
-            opponentStongest.setPosition(Position.FIELD);
-
-        }
     }
 
     @Override

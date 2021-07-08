@@ -2,8 +2,6 @@ package view.menus;
 
 import controller.ImportExportMenuController;
 
-import java.io.IOException;
-
 public class ImportExportMenu extends Menu {
     private ImportExportMenuController importExportMenuController;
 
@@ -14,11 +12,7 @@ public class ImportExportMenu extends Menu {
 
     @Override
     public void run() {
-        try {
-            importExportMenuController.processCommand(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        importExportMenuController.processCommand(input);
         runMenuCommands();
     }
 }

@@ -16,7 +16,7 @@ public abstract class CardFactory {
     public static void readCVSOfCards() {
         allCards = new ArrayList<>();
         String[] cardDate;
-        File file = new File("Yu_Gi_Oh/src/main/java/model/cards/Monster.csv");
+        File file = new File("Yu_Gi_Oh/src/main/resources/database/Monster.csv");
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -191,7 +191,7 @@ public abstract class CardFactory {
                             Integer.parseInt(cardDate[3]), Integer.parseInt(cardDate[4]), Integer.parseInt(cardDate[5])));
             }
         }
-        File file2 = new File("Yu_Gi_Oh/src/main/java/model/cards/SpellAndTrap.csv");
+        File file2 = new File("Yu_Gi_Oh/src/main/resources/database/SpellAndTrap.csv");
         Scanner scanner2 = null;
         try {
             scanner2 = new Scanner(file2);

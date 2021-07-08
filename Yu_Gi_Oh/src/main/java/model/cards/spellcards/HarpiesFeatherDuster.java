@@ -1,6 +1,5 @@
 package model.cards.spellcards;
 
-import controller.DuelMenuController;
 import model.cards.monstercards.MonsterCard;
 
 public class HarpiesFeatherDuster extends SpellCard{
@@ -12,7 +11,7 @@ public class HarpiesFeatherDuster extends SpellCard{
     }
 
     public void action(MonsterCard monster){
-        DuelMenuController.getInstance().game.getCurrentPlayer().getBoard().putCardInGraveyard(monster);
+
     }
 
     @Override

@@ -1,5 +1,4 @@
 package model.cards.trapcards;
-import java.lang.Class.*;
 import model.cards.Card;
 import model.cards.monstercards.MonsterCard;
 import model.cards.spellcards.CardType;

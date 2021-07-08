@@ -1,6 +1,10 @@
 package view.menus;
 
 
+import controller.FileWriterAndReader;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -12,6 +16,7 @@ public abstract class Menu {
     private ArrayList<Menu> subMenus;
     protected static Scanner scan;
     protected String input = "";
+    public static Stage stage;
 
     protected Menu(String name, Menu parentMenu) {
         this.name = name;
@@ -31,7 +36,10 @@ public abstract class Menu {
         if (input.matches("menu exit")) {
             if (this.parentMenu != null)
                 parentMenu.runMenuCommands();
-            else System.exit(1);
+            else {
+                FileWriterAndReader.getInstance().write();
+                System.exit(1);
+            }
         } else if (input.matches("menu show-current")) {
             print(this.name);
             this.runMenuCommands();
@@ -47,7 +55,7 @@ public abstract class Menu {
                         break;
                     }
                 }
-                if (isSubmenuFounded && !(this.name.matches("Login") && (this.subMenus.get(counter).name.equalsIgnoreCase("duel") )))
+                if (isSubmenuFounded && !(this.name.matches("Login") && !(this.subMenus.get(counter).name.equalsIgnoreCase("duel") )))
                     this.subMenus.get(counter).runMenuCommands();
                 else {
                     print("menu navigation is not possible");
