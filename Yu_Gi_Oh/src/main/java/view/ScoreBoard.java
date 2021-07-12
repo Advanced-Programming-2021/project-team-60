@@ -11,7 +11,7 @@ import java.net.URL;
 public class ScoreBoard extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        URL scoreBoard = getClass().getResource("fxml/ScoreBoard.fxml");
+        URL scoreBoard = getClass().getResource("/fxml/ScoreBoard.fxml");
         Parent root = FXMLLoader.load(scoreBoard);
         Scene scene = new Scene(root);
         stage.setTitle("ScoreBoard");
