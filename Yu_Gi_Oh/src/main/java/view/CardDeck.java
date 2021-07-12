@@ -14,9 +14,13 @@ public class CardDeck extends Application {
         URL scoreBoard = getClass().getResource("/fxml/CardDeck.fxml");
         Parent root = FXMLLoader.load(scoreBoard);
         Scene scene = new Scene(root);
-        stage.setTitle("ScoreBoard");
+        stage.setTitle("CardDeck");
         root.getStyleClass().add("button");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

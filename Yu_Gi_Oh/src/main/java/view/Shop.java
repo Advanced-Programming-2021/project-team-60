@@ -14,9 +14,13 @@ public class Shop extends Application {
         URL scoreBoard = getClass().getResource("/fxml/Shop.fxml");
         Parent root = FXMLLoader.load(scoreBoard);
         Scene scene = new Scene(root);
-        stage.setTitle("ScoreBoard");
+        stage.setTitle("Shop");
         root.getStyleClass().add("button");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
