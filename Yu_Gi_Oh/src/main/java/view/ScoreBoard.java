@@ -25,7 +25,7 @@ public class ScoreBoard extends Application {
         Parent root = FXMLLoader.load(scoreBoard);
         Scene scene = new Scene(root);
         stage.setTitle("ScoreBoard");
-        root.getStyleClass().add("button");
+        root.getStyleClass().add("backGround");
         stage.setScene(scene);
         stage.show();
     }
