@@ -7,12 +7,30 @@
 <?import javafx.scene.layout.*?>
 
 <?import java.net.URL?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="view.Shop"
             prefHeight="400.0" prefWidth="600.0">
 
+    <top>
+        <HBox alignment="CENTER">
+            <Label text="ScoreBoard"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox alignment="CENTER">
+            <Button text="ShowShopMenu" onMouseClicked="#showShopMenu"/>
+        </HBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="BASELINE_RIGHT">
+            <Button text="ExitGame" onMouseClicked="#exitGame"/>
+        </HBox>
+    </bottom>
+
     <stylesheets>
         <URL value="@../CSS/style.css" />
     </stylesheets>
-</AnchorPane>
+</BorderPane>
