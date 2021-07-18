@@ -43,7 +43,6 @@ public class DeckMenuController extends Controller {
             new Deck(commandSplit[2]);
             User.currentUser.getUserDecks().createDeck(commandSplit[2]);
             print("deck created successfully!");
-            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -63,7 +62,6 @@ public class DeckMenuController extends Controller {
         else {
             User.currentUser.getUserDecks().setActiveDeck(commandSplit[2]);
             print("deck activated successfully!");
-            FileWriterAndReader.getInstance().write();
         }
     }
 
@@ -75,10 +73,10 @@ public class DeckMenuController extends Controller {
         String cardName = cardNameMatcher.group(1);
         String deckName = deckNameMatcher.group(1);
         String deckType = command.contains("--side") ? "side" : "main";
-        if (!User.currentUser.getUserDecks().getDeckByName(deckName).isThisCardAvailable(cardName))
-            print("card with name " + cardName + " does not exist");
-        else if (!User.currentUser.getUserDecks().isDeckNameUsedBefore(deckName))
+        if (!User.currentUser.getUserDecks().isDeckNameUsedBefore(deckName))
             print("deck with name " + deckName + " does not exist");
+       else if (!User.currentUser.getUserDecks().getDeckByName(deckName).isThisCardAvailable(cardName))
+            print("card with name " + cardName + " does not exist");
         else if (!deckType.equals("side") && User.currentUser.getUserDecks().getDeckByName(deckName).getMainDeck().isDeckFull())
             print("main deck if full");
         else if (deckType.equals("side") && User.currentUser.getUserDecks().getDeckByName(deckName).getSideDeck().isDeckFull())

@@ -1,8 +1,6 @@
 package model;
 
 import model.cards.Card;
-import model.cards.CardFactory;
-import model.game.Board;
 
 import java.util.ArrayList;
 
