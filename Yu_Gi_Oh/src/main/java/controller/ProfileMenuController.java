@@ -10,6 +10,7 @@ public class ProfileMenuController extends Controller {
         else if (command.matches("profile change (?=.*(--password))(?=.*(--current \\S+))(?=.*(--new \\S+))" +
                 "((\\1 \\2 \\3)|(\\1 \\3 \\2)|(\\2 \\1 \\3)|(\\2 \\3 \\1)|(\\3 \\1 \\2)|(\\3 \\2 \\1))"))
             changePassword(command);
+        else if (command.matches("profile change --username (\\S+)")) changeUsername(command);
         else print("invalid command");
     }
 
@@ -43,5 +44,21 @@ public class ProfileMenuController extends Controller {
                 FileWriterAndReader.getInstance().write();
             }
         }
+    }
+    public void changeUsername(String command){
+        Matcher usernameMatcher = getMatcher("--username (\\S+)", command);
+        if (usernameMatcher.find()) {
+            String username = usernameMatcher.group(1);
+            for (User user : User.getAllUsers()) {
+                if (user.getUsername().equals(username)) {
+                    print("user with username " + username + " already exists");
+                    return;
+                }
+            }
+            User.currentUser.setUsername(username);
+            print("username changed successfully!");
+            FileWriterAndReader.getInstance().write();
+        }
+
     }
 }
