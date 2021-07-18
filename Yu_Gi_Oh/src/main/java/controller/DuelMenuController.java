@@ -1,6 +1,7 @@
 package controller;
 
 
+import model.User;
 import model.cards.Card;
 import model.cards.CardFactory;
 import model.cards.Location;
@@ -52,7 +53,21 @@ public class DuelMenuController extends Controller {
         else if (command.equalsIgnoreCase("activate effect")) activateEffect();
         else if (command.equalsIgnoreCase("show graveyard")) showGraveyard();
         else if (command.equalsIgnoreCase("surrender")) surrender();
+        else if (command.matches("increase --LP \\d+")) cheatIncreaseLP(command.replace("increase --LP ", ""));
+        else if (command.matches("duel set-winner \\S+"))
+            cheatSetWinner(command.replace("duel set-winner ", ""));
         else print("invalid command");
+    }
+
+    private void cheatSetWinner(String nickname) {
+        if (User.getUserByUsername(game.getOpponentPlayer().getUsername()).getNickname().equalsIgnoreCase(nickname))
+            game.goToNextRound(game.getOpponentPlayer(), game.getCurrentPlayer());
+        else if (User.getUserByUsername(game.getCurrentPlayer().getUsername()).getNickname().equalsIgnoreCase(nickname))
+            game.goToNextRound(game.getCurrentPlayer(), game.getOpponentPlayer());
+    }
+
+    private void cheatIncreaseLP(String amount) {
+        game.getCurrentPlayer().setLifePoint(game.getCurrentPlayer().getLifePoint() + Integer.parseInt(amount));
     }
 
     private void showCard(String cardName) {
@@ -295,8 +310,6 @@ public class DuelMenuController extends Controller {
         }
         game.setSelectedCard(null);
     }
-
-
 
 
     public void flipSummon() {

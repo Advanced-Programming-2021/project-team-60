@@ -237,7 +237,7 @@ class EffectActivationNotAllowedInCurrentPhase extends CardHandler {
 class CardAlreadyActivated extends CardHandler {
     @Override
     public boolean handle(Card card) {
-        if (card.getHasBeenActivated() && card != null) {
+        if (card.getHasBeenActivated()) {
             Controller.print("you have already activated this card");
             return false;
         }

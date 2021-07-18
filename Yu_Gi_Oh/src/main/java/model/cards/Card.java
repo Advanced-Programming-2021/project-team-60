@@ -19,6 +19,7 @@ public class Card implements Prototype {
         setName(name);
         setDescription(description);
         setPrice(price);
+        setHasBeenActivated(false);
     }
 
     public Card(String name, String description, boolean isHidden, Location location, int price) {

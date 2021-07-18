@@ -12,9 +12,14 @@ public class ShopMenuController extends Controller {
 
     public void processCommand(String command) {
         if (command.matches("shop buy .*")) buyCard(command);
+        else if (command.matches("increase --money \\d+")) cheatIncreaseMoney(command.replace("increase --money ", ""));
         else if (command.matches("shop show --all")) showAllCards();
         else if (command.matches("card show .*")) showCard(command.replace("card show ",""));
         else print("invalid command");
+    }
+
+    private void cheatIncreaseMoney(String amount) {
+        User.currentUser.setCoins(User.currentUser.getCoins() + Integer.parseInt(amount));
     }
 
     private void showCard (String cardName) {
@@ -36,8 +41,8 @@ public class ShopMenuController extends Controller {
                 else {
                     for (Deck deck : User.currentUser.getUserDecks().getAllDecks()) {
                         deck.addCardToUserCardsAvailableToAdd(card);
-                        User.currentUser.setCoins(User.currentUser.getCoins() - card.getPrice());
                     }
+                    User.currentUser.setCoins(User.currentUser.getCoins() - card.getPrice());
                     User.currentUser.addCard(card);
                 }
             }
