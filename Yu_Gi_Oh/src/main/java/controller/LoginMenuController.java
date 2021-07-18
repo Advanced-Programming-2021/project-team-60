@@ -7,22 +7,22 @@ import java.util.regex.Matcher;
 
 public class LoginMenuController extends Controller {
     public void processCommand(String command) {
-        if (command.matches("user create (?=.*(--username \\S+))(?=.*(--nickname \\S+))(?=.*(--password \\S+))" +
+        if (command.matches("user create (?=.*(--username \\S+|-u \\S+))(?=.*(--nickname \\S+|-n \\S+))(?=.*(--password \\S+|-p \\S+))" +
                 "((\\1 \\2 \\3)|(\\1 \\3 \\2)|(\\2 \\1 \\3)|(\\2 \\3 \\1)|(\\3 \\1 \\2)|(\\3 \\2 \\1))"))
             createUser(command);
-        else if (command.matches("user login (?=.*(--username \\S+))(?=.*(--password \\S+))((\\1 \\2)|(\\2 \\1))"))
+        else if (command.matches("user login (?=.*(--username \\S+|-u \\S+))(?=.*(--password \\S+|-p \\S+))((\\1 \\2)|(\\2 \\1))"))
             login(command);
         else print("invalid command");
     }
 
     public void createUser(String command) {
-        Matcher usernameMatcher = getMatcher("--username (\\S+)", command);
-        Matcher nicknameMatcher = getMatcher("--nickname (\\S+)", command);
-        Matcher passwordMatcher = getMatcher("--password (\\S+)", command);
+        Matcher usernameMatcher = getMatcher("(--username|-u) (\\S+)", command);
+        Matcher nicknameMatcher = getMatcher("(--nickname|-n) (\\S+)", command);
+        Matcher passwordMatcher = getMatcher("(--password|-p) (\\S+)", command);
         if (usernameMatcher.find() && nicknameMatcher.find() && passwordMatcher.find()) {
-            String username = usernameMatcher.group(1);
-            String nickname = nicknameMatcher.group(1);
-            String password = passwordMatcher.group(1);
+            String username = usernameMatcher.group(2);
+            String nickname = nicknameMatcher.group(2);
+            String password = passwordMatcher.group(2);
             for (User user : User.getAllUsers()) {
                 if (user.getUsername().equals(username)) {
                     print("user with username " + username + " already exists");
@@ -39,11 +39,11 @@ public class LoginMenuController extends Controller {
     }
 
     public void login(String command) {
-        Matcher usernameMatcher = getMatcher("--username (\\S+)", command);
-        Matcher passwordMatcher = getMatcher("--password (\\S+)", command);
+        Matcher usernameMatcher = getMatcher("(--username|-u) (\\S+)", command);
+        Matcher passwordMatcher = getMatcher("(--password|-p) (\\S+)", command);
         if (usernameMatcher.find() && passwordMatcher.find()) {
-            String username = usernameMatcher.group(1);
-            String password = passwordMatcher.group(1);
+            String username = usernameMatcher.group(2);
+            String password = passwordMatcher.group(2);
             if (!User.getAllUsers().contains(User.getUserByUsername(username)))
                 print("Username and password didn’t match!");
             else if (!User.getUserByUsername(username).getPassword().equals(password))
