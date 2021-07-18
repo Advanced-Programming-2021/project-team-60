@@ -72,24 +72,23 @@ public class FileWriterAndReader {
                     deck.getSideDeck().getAllCards().add(i, CardFactory.getCardByCardName(name));
                 }
             }
-            for (int i = 0; i < user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().size(); i++) {
-                String name = user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().get(i).getName();
-                user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().remove(i);
-                user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().add(i, CardFactory.getCardByCardName(name));
-            }
-            for (int i = 0; i < user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().size(); i++) {
-                String name = user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().get(i).getName();
-                user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().remove(i);
-                user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().add(i, CardFactory.getCardByCardName(name));
-            }
-            for (int i = 0; i < user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().size(); i++) {
-                String name = user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().get(i).getName();
-                user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().remove(i);
-                user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().add(i, CardFactory.getCardByCardName(name));
+            if (user.getUserDecks().getActiveDeck() != null){
+                for (int i = 0; i < user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().size(); i++) {
+                    String name = user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().get(i).getName();
+                    user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().remove(i);
+                    user.getUserDecks().getActiveDeck().getUserCardsAvailableToAdd().add(i, CardFactory.getCardByCardName(name));
+                }
+                for (int i = 0; i < user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().size(); i++) {
+                    String name = user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().get(i).getName();
+                    user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().remove(i);
+                    user.getUserDecks().getActiveDeck().getMainDeck().getAllCards().add(i, CardFactory.getCardByCardName(name));
+                }
+                for (int i = 0; i < user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().size(); i++) {
+                    String name = user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().get(i).getName();
+                    user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().remove(i);
+                    user.getUserDecks().getActiveDeck().getSideDeck().getAllCards().add(i, CardFactory.getCardByCardName(name));
+                }
             }
         }
     }
-
-
-
 }

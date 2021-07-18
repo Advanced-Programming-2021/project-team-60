@@ -28,52 +28,37 @@ public class ImportExportMenuController extends Controller {
     }
 
     private void importCard(String cardName) {
-        File file = new File("Yu_Gi_Oh/src/main/resources/database/usersImportedCards/" + User.currentUser.getUsername() + ".json");
+        File directory = new File("Yu_Gi_Oh/src/main/resources/database/usersImportedCards/" + User.currentUser.getUsername());
+        if (!directory.exists()) directory.mkdir();
+        File file = new File(directory.getPath() + "/" + cardName + ".json");
         if (CardFactory.getCardByCardName(cardName) != null) {
             try {
                 file.createNewFile();
-                String json = new String(Files.readAllBytes(Path.of(file.getPath())));
-                ArrayList<Card> importedCards = (new Gson().fromJson(json, new TypeToken<List<Card>>() {
-                }.getType()));
-                if (importedCards == null) {
-                    importedCards = new ArrayList<>();
-                    importedCards.add(CardFactory.getCardByCardName(cardName));
-                } else {
-                    for (int i = 0; i < importedCards.size(); i++) {
-                        if (importedCards.get(i).getName().equalsIgnoreCase(cardName)) break;
-                        importedCards.add(CardFactory.getCardByCardName(cardName));
-                    }
-                }
-                write(importedCards);
+                FileWriter writer = new FileWriter(file.getPath());
+                writer.write(new Gson().toJson(CardFactory.getCardByCardName(cardName)));
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     private void exportCard(String cardName) {
-        File file = new File("Yu_Gi_Oh/src/main/resources/database/usersImportedCards/" + User.currentUser.getUsername() + ".json");
-        if (file.exists() && CardFactory.getCardByCardName(cardName) != null) {
-            try {
-                String json = new String(Files.readAllBytes(Path.of(file.getPath())));
-                if (!json.isEmpty()) {
-                    ArrayList<Card> importedCards = (new Gson().fromJson(json, new TypeToken<List<Card>>() {
-                    }.getType()));
-                    for (int i = 0; i < importedCards.size(); i++) {
-                        if (importedCards.get(i).getName().equalsIgnoreCase(cardName)) importedCards.remove(i);
+        File directory = new File("Yu_Gi_Oh/src/main/resources/database/usersImportedCards/" + User.currentUser.getUsername());
+        if (directory.exists()) {
+            File file = new File(directory.getPath()  + "/"+ cardName + ".json");
+            if (file.exists()) {
+                try {
+                    String json = new String(Files.readAllBytes(Path.of(file.getPath())));
+                    if (!json.isEmpty()) {
+                        Card card = (new Gson().fromJson(json, new TypeToken<Card>() {}.getType()));
+                        print(CardFactory.getCardByCardName(cardName).toString());
+                        file.delete();
                     }
-                    write(importedCards);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-    }
-
-    private void write(ArrayList<Card> cards) throws IOException {
-        FileWriter writer = new FileWriter("Yu_Gi_Oh/src/main/resources/database/usersImportedCards/" + User.currentUser.getUsername() + ".json");
-        writer.write(new Gson().toJson(cards));
-        writer.close();
     }
 }

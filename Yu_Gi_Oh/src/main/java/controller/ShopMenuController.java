@@ -36,6 +36,7 @@ public class ShopMenuController extends Controller {
                 else {
                     for (Deck deck : User.currentUser.getUserDecks().getAllDecks()) {
                         deck.addCardToUserCardsAvailableToAdd(card);
+                        User.currentUser.setCoins(User.currentUser.getCoins() - card.getPrice());
                     }
                     User.currentUser.addCard(card);
                 }

@@ -136,7 +136,6 @@ public class Game {
             Controller.print(winner.getUsername() + " won the whole match with score: " + winner.getLifePoint() + "-" + loser.getLifePoint());
             winner.win();
             loser.lose();
-            FileWriterAndReader.getInstance().write();
             DuelMenuController.endGame();
         } else {
             winner.renewBoard();
